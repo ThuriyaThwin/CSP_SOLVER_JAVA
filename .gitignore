@@ -3,4 +3,8 @@
 # Package Files #
 *.jar
 *.war
+<<<<<<< HEAD
 *.ear
+=======
+*.ear
+>>>>>>> dc75fdb5a25a23777c5f97ebd6fad86137be268b
