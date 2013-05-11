@@ -8,7 +8,7 @@ public class Problem {
 	private LinkedList<Value> values = new LinkedList<Value>();
 	private CSPLimits cspLimits;
 	
-	private int lastSetValue = -1;
+	private int lastSetValue = 0;
 	
 	public Problem(){
 		
@@ -93,10 +93,12 @@ public class Problem {
 	
 	public boolean allValuesSet(){
 		for(Value value : values)
-			if(!value.isSet())
+			if(!value.isSet()){
+//				System.out.println("allValuesSet " + false);
 				return false;
+			}
 		
-		
+//		System.out.println("allValuesSet " + true);
 		return true;
 	}
 	
@@ -109,6 +111,7 @@ public class Problem {
 			result = false;
 		}
 		
+//		System.out.println("goOneLevelDown " + result);
 		return result;
 	}
 	
@@ -123,7 +126,27 @@ public class Problem {
 		} else {
 			result = false;
 		}
+//		System.out.println("goOneLevelUp " + result);
 		
 		return result;
 	}
+	
+	public boolean setNextValue(){
+		boolean result = true;
+		
+		Value value = values.get(lastSetValue);
+		result = value.setNextValue();
+//		System.out.println("setNextValue " + result);
+		return result;
+	}
+	
+	public boolean setPreviousValue(){
+		boolean result = true;
+		
+		Value value = values.get(lastSetValue);
+		result = value.setPreviousValue();
+		
+		return result;
+	}
+	
 }

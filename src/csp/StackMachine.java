@@ -1,11 +1,9 @@
 package csp;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
 
-import javax.swing.plaf.multi.MultiOptionPaneUI;
-
+import datamodels.CSPLimits;
 import datamodels.Problem;
 
 public class StackMachine {
@@ -47,6 +45,19 @@ public class StackMachine {
 
 	public void setProblem(Problem problem) {
 		problemToCheck = problem;
+	}
+	
+	public boolean checkLimits(CSPLimits limits){
+		boolean result = true;
+		
+		for(String limit : limits.getLimits()){
+			if(!checkString(limit)){
+				result = false;
+				break;
+			}
+		}
+		
+		return result;
 	}
 
 	public boolean checkString(String toCheck) {

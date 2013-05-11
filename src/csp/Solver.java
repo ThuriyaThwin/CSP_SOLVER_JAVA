@@ -24,12 +24,44 @@ public class Solver {
 		
 		stackMachine = StackMachine.getInstance();
 		stackMachine.setValueNames(problemToSolve.getValueNames());
+		stackMachine.setProblem(problemToSolve);
 	}
 	
 	public void solveUsingBacktracking(){
+		long startTime = System.nanoTime();
+		System.out.println("Started solving");
+		boolean stop = false;
 		while(!problemToSolve.allValuesSet()){
 			
+			while(!problemToSolve.setNextValue()){
+				if(!problemToSolve.goOneLevelUp()){
+					stop = true;
+					break;
+				}
+			}
+			
+			if(stop)
+				break;
+
+			boolean checkLimits = true;
+			
+			while(!(checkLimits = stackMachine.checkLimits(cspLimits))){
+				if(!problemToSolve.setNextValue())
+					break;
+			}
+			
+			if(!checkLimits){
+				problemToSolve.goOneLevelUp();
+			}
+			else{
+				problemToSolve.goOneLevelDown();
+			}
+			
+//			problemToSolve.printValues();
 		}
+		long totalTime = (System.nanoTime() - startTime)/1000000;
+		System.out.println("Found in: " + totalTime + " ms");
+		problemToSolve.printValues();
 	}
 	
 	private boolean checkLimits(){

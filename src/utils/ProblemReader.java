@@ -33,7 +33,6 @@ public class ProblemReader {
 			
 			String[] values = line.split(" ");
 			
-			System.out.println(" PROBLEM READER " + line);
 			
 			for(String s: values){
 				Value value = new Value(s);
