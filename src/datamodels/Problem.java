@@ -100,11 +100,26 @@ public class Problem {
 		return true;
 	}
 	
-	public boolean setNextValue(){
+	public boolean goOneLevelDown(){
 		boolean result = true;
 		
-		if(lastSetValue < values.size() - 1){
+		if(lastSetValue < values.size() -1){
+			++lastSetValue;
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	public boolean goOneLevelUp(){
+		boolean result = true;
+		
+		if(lastSetValue > 0){
+			Value value = values.get(lastSetValue);
+			value.clearValue();
 			
+			--lastSetValue;
 		} else {
 			result = false;
 		}
