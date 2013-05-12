@@ -11,7 +11,7 @@ public class Main {
 		ProblemReader reader = ProblemReader.getInstance();
 		StackMachine stackMachine = StackMachine.getInstance();
 		
-		generator.generateHetmanProblem(8, "csp.txt");
+		generator.generateHetmanProblem(11, "csp.txt");
 		Problem problem = reader.readProblem("csp.txt");
 		stackMachine.setValueNames(problem.getValueNames());
 		

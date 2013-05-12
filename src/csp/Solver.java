@@ -30,22 +30,17 @@ public class Solver {
 	public void solveUsingBacktracking(){
 		long startTime = System.nanoTime();
 		System.out.println("Started solving");
-		boolean stop = false;
+		
+		int answersFound = 0;
+		
 		while(!problemToSolve.allValuesSet()){
 			
-			while(!problemToSolve.setNextValue()){
-				if(!problemToSolve.goOneLevelUp()){
-					stop = true;
-					break;
-				}
-			}
-			
-			if(stop)
+			if(!changeValues())
 				break;
 
 			boolean checkLimits = true;
 			
-			while(!(checkLimits = stackMachine.checkLimits(cspLimits))){
+			while(!(checkLimits = checkLimits())){
 				if(!problemToSolve.setNextValue())
 					break;
 			}
@@ -57,11 +52,37 @@ public class Solver {
 				problemToSolve.goOneLevelDown();
 			}
 			
-//			problemToSolve.printValues();
+			if(problemToSolve.allValuesSet() && checkLimits){
+				++answersFound;
+//				problemToSolve.printValues();
+				
+				while(problemToSolve.allValuesSet()){
+					if(changeValues()){
+						if(problemToSolve.allValuesSet() && checkLimits()){
+							++answersFound;
+//							problemToSolve.printValues();
+						}
+					}
+					else
+						break;
+				}
+			}
+			
 		}
 		long totalTime = (System.nanoTime() - startTime)/1000000;
-		System.out.println("Found in: " + totalTime + " ms");
-		problemToSolve.printValues();
+		System.out.println("Found "+ answersFound +" in: " + totalTime + " ms");
+	}
+	
+	private boolean changeValues(){
+		boolean result = true;
+		while(!problemToSolve.setNextValue()){
+			if(!problemToSolve.goOneLevelUp()){
+				result = false;
+				break;
+			}
+		}
+		
+		return result;
 	}
 	
 	private boolean checkLimits(){
@@ -69,12 +90,8 @@ public class Solver {
 		
 		
 		for(String limit : cspLimits.getLimits()){
-			if(stackMachine.checkString(limit))
-				System.out.println("TRUE " + limit);
-			else{
-				System.out.println("FALSE " + limit);
+			if(!stackMachine.checkString(limit))
 				return false;
-			}
 		}
 		
 		
