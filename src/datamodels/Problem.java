@@ -3,15 +3,55 @@ package datamodels;
 import java.util.LinkedList;
 import java.util.Random;
 
+import csp.StackMachine;
+
 public class Problem {
 
 	private LinkedList<Value> values = new LinkedList<Value>();
 	private CSPLimits cspLimits;
+	private StackMachine stackMachine = new StackMachine();
+	
+	private boolean stackMachineChecked;
 	
 	private int lastSetValue = 0;
 	
 	public Problem(){
 		
+	}
+	
+	public boolean forwardCheck(){
+		boolean result = true;
+		
+		if(!stackMachineChecked){
+			stackMachine = new StackMachine();
+			stackMachine.setProblem(this);
+			stackMachine.setValueNames(getValueNames());
+			stackMachineChecked = true;
+		}
+		
+		
+		for(int i = lastSetValue+1; i<values.size(); i++){
+			Value valueToCheck = values.get(i);
+			
+			int limitsSize = valueToCheck.getLimits().getLimits().size();
+			
+			for(int j = 0; j<limitsSize; j++){
+				valueToCheck.setLimit(j);
+				if(!stackMachine.checkLimits(cspLimits)){
+					valueToCheck.blockLimit(j);
+				}
+			}
+			
+			if(!valueToCheck.hasFreeLimits()){
+				valueToCheck.clearValue();
+//				System.out.println("FALSE");
+				return false;
+			}
+			
+			valueToCheck.clearValue();
+		}
+		
+		return result;
 	}
 	
 	public Problem(Problem problem){
@@ -140,6 +180,15 @@ public class Problem {
 		return result;
 	}
 	
+	public boolean setNextValueForward(){
+		boolean result = true;
+		
+		Value value = values.get(lastSetValue);
+		result = value.setNextValueForward();
+		
+		return result;
+	}
+	
 	public boolean setPreviousValue(){
 		boolean result = true;
 		
@@ -147,6 +196,13 @@ public class Problem {
 		result = value.setPreviousValue();
 		
 		return result;
+	}
+	
+	public void resetValues(){
+		lastSetValue = 0;
+		for(Value value : values){
+			value.clearValue();
+		}
 	}
 	
 }

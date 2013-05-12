@@ -1,5 +1,6 @@
 package csp;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -73,6 +74,8 @@ public class StackMachine {
 			if (isOperator(stack.peek()))
 				handleOperator();
 		}
+		
+//		System.out.println(Arrays.toString(splitted) + " " + stack.peek().equals(TRUE));
 
 		return stack.pop().equals(TRUE);
 	}
@@ -96,6 +99,9 @@ public class StackMachine {
 			break;
 		case DIFFERENT:
 			handleStackDifferent();
+			break;
+		case ADD:
+			handleStackAdd();
 			break;
 		default:
 			break;
@@ -127,8 +133,9 @@ public class StackMachine {
 		String first = getValueFromStack();
 		String second = getValueFromStack();
 
-		while (isOperator(stack.peek()))
-			handleOperator();
+		if (!stack.isEmpty())
+			while (isOperator(stack.peek()))
+				handleOperator();
 
 		if (checkIsValueIsNull(first) || checkIsValueIsNull(second))
 			stack.push(TRUE);
@@ -178,6 +185,26 @@ public class StackMachine {
 			stack.push(String.valueOf(result));
 		}
 
+	}
+	
+	private void handleStackAdd() {
+		String first = getValueFromStack();
+		String second = getValueFromStack();
+		
+		if (!stack.isEmpty())
+			while (isOperator(stack.peek()))
+				handleOperator();
+		
+		if(checkIsValueIsNull(first) || checkIsValueIsNull(second))
+			stack.push("null");
+		else{
+			int firstValue = Integer.valueOf(first);
+			int secondValue = Integer.valueOf(second);
+			
+			int result = firstValue + secondValue;
+			
+			stack.push(String.valueOf(result));
+		}
 	}
 
 	private void handleStackModulo() {

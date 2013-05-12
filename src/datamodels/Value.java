@@ -1,9 +1,12 @@
 package datamodels;
 
+import java.util.LinkedList;
+
 public class Value {
 	
 	private String content;
-	private ValueLimits limits = new ValueLimits();;
+	private ValueLimits limits = new ValueLimits();
+	private LinkedList<Integer> blockedLimits = new LinkedList<Integer>();
 	private boolean isSet;
 	private String value = "null";
 	
@@ -71,6 +74,27 @@ public class Value {
 		}
 	}
 	
+	public boolean setNextValueForward(){
+		++takenLimitId;
+		
+		if(takenLimitId < limits.getLimits().size()){
+			if(!blockedLimits.contains(takenLimitId)){
+				value = limits.getLimits().get(takenLimitId);
+				isSet = true;
+				return true;
+			} else 
+				return setNextValueForward();
+		} else {
+			--takenLimitId;
+			return false;
+		}
+	}
+	
+	public void setLimit(int id){
+		value = limits.getLimits().get(id);
+		isSet = true;
+	}
+	
 	public boolean setPreviousValue(){
 		--takenLimitId;
 		
@@ -88,6 +112,20 @@ public class Value {
 		isSet = false;
 		value = "null";
 		takenLimitId = -1;
+		blockedLimits.clear();
+	}
+	
+	public void blockCurrentLimit(){
+		blockedLimits.add(takenLimitId);
 	}
 
+	public void blockLimit(int id){
+		if(!blockedLimits.contains(id)){
+			blockedLimits.add(id);
+		}
+	}
+	
+	public boolean hasFreeLimits(){
+		return !(blockedLimits.size()==limits.getLimits().size());
+	}
 }
