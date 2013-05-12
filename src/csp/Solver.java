@@ -88,7 +88,7 @@ public class Solver {
 			
 			boolean checkLimits = true;
 			
-			while(!(checkLimits = checkLimits())){
+			while(!(checkLimits = checkLimitsForward())){
 				if(!problemToSolve.setNextValueForward())
 					break;
 			}
@@ -109,10 +109,10 @@ public class Solver {
 				
 				
 				while(problemToSolve.allValuesSet()){
-					if(changeValues()){
+					if(changeValuesForward()){
 						if(problemToSolve.allValuesSet() && checkLimits()){
 							++answersFound;
-							problemToSolve.printValues();
+//							problemToSolve.printValues();
 						}
 					}
 					else
@@ -161,6 +161,10 @@ public class Solver {
 		
 		
 		return result;
+	}
+	
+	private boolean checkLimitsForward(){
+		return problemToSolve.forwardCheck();
 	}
 
 }

@@ -11,14 +11,27 @@ public class Main {
 		ProblemReader reader = ProblemReader.getInstance();
 		StackMachine stackMachine = StackMachine.getInstance();
 		
-//		generator.generateHetmanProblem(9, "csp.txt");
+//		generator.generateHetmanProblem(10, "csp.txt");
 		Problem problem = reader.readProblem("csp.txt");
 		stackMachine.setValueNames(problem.getValueNames());
 		
 		Solver solver = Solver.getInstance();
+
+		
 		solver.setProblem(problem);
+		System.out.println("Forward Checking: ");
 		solver.solveUsingForwardChecking();
-//		solver.solveUsingBacktracking();
+		
+		System.out.println("");
+		
+		problem = reader.readProblem("csp.txt");
+		solver.setProblem(problem);
+		System.out.println("BackTracking: ");
+		solver.solveUsingBacktracking();
+		
+		
+		
+		
 		
 	}
 
