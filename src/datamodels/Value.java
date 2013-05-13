@@ -74,9 +74,14 @@ public class Value {
 		}
 	}
 	
+	private int lastTakenLimit = -1;
+	
 	public boolean setNextValueForward(){
-		++takenLimitId;
+		if(lastTakenLimit == -1)
+			lastTakenLimit = takenLimitId;
 		
+		++takenLimitId;
+//		System.out.println("blocked items: " + blockedLimits.size());
 		if(takenLimitId < limits.getLimits().size()){
 			if(!blockedLimits.contains(takenLimitId)){
 				value = limits.getLimits().get(takenLimitId);
@@ -85,7 +90,8 @@ public class Value {
 			} else 
 				return setNextValueForward();
 		} else {
-			--takenLimitId;
+			takenLimitId = lastTakenLimit;
+			lastTakenLimit = -1;
 			return false;
 		}
 	}
@@ -106,6 +112,12 @@ public class Value {
 			isSet = true;
 			return true;
 		}
+	}
+	
+	public void clearWithoutLimits(){
+		isSet = false;
+		value = "null";
+		takenLimitId = -1;
 	}
 	
 	public void clearValue(){

@@ -31,7 +31,6 @@ public class Solver {
 		System.out.println("Started solving");
 		long startTime = System.nanoTime();		
 		int answersFound = 0;
-//		int counter = 0;
 		while(!problemToSolve.allValuesSet()){
 			
 			if(!changeValues())
@@ -53,12 +52,6 @@ public class Solver {
 			
 			if(problemToSolve.allValuesSet() && checkLimits){
 				++answersFound;
-//				++counter;
-//				if(counter >= 100){
-//					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
-//					problemToSolve.printValues();
-//					counter = 0;
-//				}
 				if(answersFound == 1){
 					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
 					problemToSolve.printValues();
@@ -69,12 +62,6 @@ public class Solver {
 					if(changeValues()){
 						if(problemToSolve.allValuesSet() && checkLimits()){
 							++answersFound;
-//							++counter;
-//							if(counter >= 100){
-//								System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
-//								problemToSolve.printValues();
-//								counter = 0;
-//							}
 						}
 					}
 					else
@@ -87,22 +74,52 @@ public class Solver {
 		System.out.println("Found "+ answersFound +" in: " + totalTime + " ms");
 	}
 	
+	public void solveUsingForwardChecking2(){
+		System.out.println("Started Solving 2");
+		long startTime = System.nanoTime();
+		
+		int answersFound = 0;
+		
+		while(!problemToSolve.allValuesSet()){
+			if(!changeValuesForward())
+				break;
+			
+			boolean checkLimits = true;
+			
+			while(!(checkLimits = changeValuesForward())){
+				if(!changeValuesForward())
+					break;
+			}
+			
+			if(problemToSolve.allValuesSet() && checkLimits()){
+				++answersFound;
+				
+				if(answersFound == 1){
+					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
+					problemToSolve.printValues();
+				}
+			}
+		}
+	}
+	
 	public void solveUsingForwardChecking(){
 		System.out.println("Started solving");
 		long startTime = System.nanoTime();		
 		int answersFound = 0;
 //		int counter = 0;
 		while(!problemToSolve.allValuesSet()){
-		
+
 			if(!changeValuesForward())
 				break;
-			
+
 			boolean checkLimits = true;
-			
+
 			while(!(checkLimits = checkLimitsForward())){
 				if(!problemToSolve.setNextValueForward())
 					break;
 			}
+
+			checkLimits = checkLimits();
 			
 			if(!checkLimits){
 				problemToSolve.goOneLevelUp();
@@ -110,32 +127,20 @@ public class Solver {
 			else{
 				problemToSolve.goOneLevelDown();
 			}
-			
+
 			if(problemToSolve.allValuesSet() && checkLimits){
-//				++counter;
 				++answersFound;
-//				if(counter >= 100){
-//					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
-//					problemToSolve.printValues();
-//					counter = 0;
-//				}
 				if(answersFound == 1){
 					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
 					problemToSolve.printValues();
 				}
-				
-				
+
+
 				while(problemToSolve.allValuesSet()){
 					if(changeValuesForward()){
 						if(problemToSolve.allValuesSet() && checkLimits()){
 //							++counter;
 							++answersFound;
-//							if(counter >= 100){
-//								System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
-//								problemToSolve.printValues();
-//								counter = 0;
-//							}
-//							problemToSolve.printValues();
 						}
 					}
 					else
@@ -143,7 +148,7 @@ public class Solver {
 				}
 			}
 		}
-		
+
 		long totalTime = (System.nanoTime() - startTime)/1000000;
 		System.out.println("Found "+ answersFound +" in: " + totalTime + " ms");
 	}

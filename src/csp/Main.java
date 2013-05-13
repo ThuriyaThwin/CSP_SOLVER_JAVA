@@ -73,7 +73,7 @@ public class Main {
 			stackMachine.setValueNames(problem.getValueNames());
 			Solver solver = Solver.getInstance();
 			
-			solver.setProblem(problem);
+			solver.setProblem(new Problem(problem));
 			
 			System.out.println("[F] Forward Checking");
 			System.out.println("[B] Backtracking");

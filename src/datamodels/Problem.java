@@ -49,12 +49,13 @@ public class Problem {
 			
 			if(!valueToCheck.hasFreeLimits()){
 				valueToCheck.clearValue();
-//				System.out.println("FALSE");
 				return false;
 			}
 			
-			valueToCheck.clearValue();
+			valueToCheck.clearWithoutLimits();
 		}
+		
+		
 		
 		return result;
 	}
@@ -148,12 +149,50 @@ public class Problem {
 				}
 			}
 		} else {
+			int n = values.size();
+			int[] heights = new int[n];
+			
+			String toPrint = "\n";
+			
+			for(int i=0; i<n;i++){
+				heights[i] = Integer.valueOf(values.get(i).getValue());
+			}
+			
+			for(int i=0; i<n; i++){
+				int maxValueIndex = getMax(heights);
+				for(int j=0; j<maxValueIndex; j++){
+					toPrint += " O ";
+				}
+				int xToAdd = n - maxValueIndex -1;
+				toPrint += " X ";
+				for(int j=0; j<xToAdd; j++){
+					toPrint += " O ";
+				}
+				toPrint +="\n";
+				heights[maxValueIndex] = -1;
+			}
+			
+			System.out.println(toPrint);
 			for(Value v : values){
 				System.out.print(v.getContent()+": " + v.getValue()+" ");
 			}
 			System.out.println("");
 		}
 		
+	}
+	
+	private int getMax(int[] tab){
+		int result = 0;
+		int maxValue = tab[0];
+		
+		for(int i=1; i<tab.length; i++){
+			if(tab[i] > maxValue){
+				maxValue = tab[i];
+				result = i;
+			}
+		}
+		
+		return result;
 	}
 	
 	public boolean allValuesSet(){
