@@ -79,5 +79,63 @@ public class ProblemReader {
 		
 		return problem;
 	}
+	
+	public Problem readProblemMS(String fileName){
+		Problem problem = new Problem();
+		BufferedReader br = null;
+		
+		try {
+			br = new BufferedReader(new FileReader(fileName));
+			
+			String line = br.readLine();
+			
+			String[] values = line.split(" ");
+			
+			
+			for(String s: values){
+				Value value = new Value(s);
+				problem.addValue(value);
+			}
+			
+			int n = problem.getValues().size();
+			
+			for(int i = 0; i < n; i++){
+				line = br.readLine();
+				
+				String[] valueLimits = line.split(" ");
+
+				Value value = problem.getValueAt(i);
+				
+				for(String s: valueLimits){
+					
+					value.addLimit(s);
+					
+				}
+			}
+			
+			CSPLimits cspLimits = new CSPLimits();
+			while((line = br.readLine()) != null){
+				cspLimits.addLimit(line);
+			}
+			
+			problem.setCspLimits(cspLimits);
+			
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			if(br != null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		problem.setIsMagicSquare();
+		return problem;
+	}
 
 }

@@ -12,8 +12,13 @@ public class Problem {
 	private StackMachine stackMachine = new StackMachine();
 	
 	private boolean stackMachineChecked;
+	private boolean isMagicSquare;
 	
 	private int lastSetValue = 0;
+	
+	public void setIsMagicSquare(){
+		isMagicSquare = true;
+	}
 	
 	public Problem(){
 		
@@ -57,6 +62,7 @@ public class Problem {
 	public Problem(Problem problem){
 		this.values = new LinkedList<Value>(problem.values);
 		this.cspLimits = new CSPLimits(problem.cspLimits);
+		this.isMagicSquare = problem.isMagicSquare;
 	}
 
 	public LinkedList<Value> getValues() {
@@ -125,10 +131,29 @@ public class Problem {
 	}
 	
 	public void printValues(){
-		for(Value v : values){
-			System.out.print(v.getContent()+": " + v.getValue()+" ");
+		
+		if(isMagicSquare){
+			System.out.println("Printing magic square:");
+			int totalValues = values.size();
+			int n = (int) Math.sqrt(totalValues);
+			
+			int count = 0;
+			
+			for(Value v : values){
+				++count;
+				System.out.print(v.getValue()+"\t");
+				if(count>=n){
+					count = 0;
+					System.out.println("");
+				}
+			}
+		} else {
+			for(Value v : values){
+				System.out.print(v.getContent()+": " + v.getValue()+" ");
+			}
+			System.out.println("");
 		}
-		System.out.println("");
+		
 	}
 	
 	public boolean allValuesSet(){

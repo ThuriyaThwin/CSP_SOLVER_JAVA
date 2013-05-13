@@ -49,21 +49,27 @@ public class Main {
 			System.out.println("Please input the N value:");
 			String lalala = br.readLine();
 			int n = Integer.valueOf(lalala);
+			boolean isMS = false;
 			switch(line){
 			case "H":
 				generator.generateHetmanProblem(n, "csp.txt");
 				break;
 			case "M":
+				isMS = true;
 				generator.generateMagicSquare(n, "csp.txt");
 				break;
 			default:
-				System.out.println("Mariusz co Ty kurwa robisz?!");
+				System.out.println("Error");
 				break;
 			}
 			
 			
 			// Tutaj juz rozwiazywanie
-			Problem problem = reader.readProblem("csp.txt");
+			Problem problem = null;
+			if(isMS)
+				problem = reader.readProblemMS("csp.txt");
+			else
+				problem = reader.readProblem("csp.txt");
 			stackMachine.setValueNames(problem.getValueNames());
 			Solver solver = Solver.getInstance();
 			
@@ -84,7 +90,7 @@ public class Main {
 				solver.solveUsingBacktracking();
 				break;
 			default:
-				System.out.println("CO TY ROBISZ ?!");
+				System.out.println("Error");
 				break;
 			}
 			
