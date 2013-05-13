@@ -31,7 +31,7 @@ public class Solver {
 		System.out.println("Started solving");
 		long startTime = System.nanoTime();		
 		int answersFound = 0;
-		
+//		int counter = 0;
 		while(!problemToSolve.allValuesSet()){
 			
 			if(!changeValues())
@@ -53,6 +53,12 @@ public class Solver {
 			
 			if(problemToSolve.allValuesSet() && checkLimits){
 				++answersFound;
+//				++counter;
+//				if(counter >= 100){
+//					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
+//					problemToSolve.printValues();
+//					counter = 0;
+//				}
 				if(answersFound == 1){
 					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
 					problemToSolve.printValues();
@@ -63,7 +69,12 @@ public class Solver {
 					if(changeValues()){
 						if(problemToSolve.allValuesSet() && checkLimits()){
 							++answersFound;
-							problemToSolve.printValues();
+//							++counter;
+//							if(counter >= 100){
+//								System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
+//								problemToSolve.printValues();
+//								counter = 0;
+//							}
 						}
 					}
 					else
@@ -80,7 +91,7 @@ public class Solver {
 		System.out.println("Started solving");
 		long startTime = System.nanoTime();		
 		int answersFound = 0;
-		
+//		int counter = 0;
 		while(!problemToSolve.allValuesSet()){
 		
 			if(!changeValuesForward())
@@ -101,7 +112,13 @@ public class Solver {
 			}
 			
 			if(problemToSolve.allValuesSet() && checkLimits){
+//				++counter;
 				++answersFound;
+//				if(counter >= 100){
+//					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
+//					problemToSolve.printValues();
+//					counter = 0;
+//				}
 				if(answersFound == 1){
 					System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
 					problemToSolve.printValues();
@@ -111,7 +128,13 @@ public class Solver {
 				while(problemToSolve.allValuesSet()){
 					if(changeValuesForward()){
 						if(problemToSolve.allValuesSet() && checkLimits()){
+//							++counter;
 							++answersFound;
+//							if(counter >= 100){
+//								System.out.print(((System.nanoTime() - startTime)/1000000)+"ms: ");
+//								problemToSolve.printValues();
+//								counter = 0;
+//							}
 //							problemToSolve.printValues();
 						}
 					}

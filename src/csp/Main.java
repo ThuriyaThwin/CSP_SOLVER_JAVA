@@ -1,37 +1,97 @@
 package csp;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import datamodels.Problem;
+
 import utils.ProblemGenerator;
 import utils.ProblemReader;
-import datamodels.Problem;
 
 public class Main {
 	
 	public static void main(String[] args){
-//		ProblemGenerator generator = ProblemGenerator.getInstance();
+		ProblemGenerator generator = ProblemGenerator.getInstance();
 		ProblemReader reader = ProblemReader.getInstance();
 		StackMachine stackMachine = StackMachine.getInstance();
 		
-//		generator.generateHetmanProblem(10, "csp.txt");
-		Problem problem = reader.readProblem("csp.txt");
-		stackMachine.setValueNames(problem.getValueNames());
+//		generator.generateHetmanProblem(8, "csp.txt");
+//		generator.generateMagicSquare(4, "csp.txt");
+//		Problem problem = reader.readProblem("csp.txt");
+//		stackMachine.setValueNames(problem.getValueNames());
+//		
+//		Solver solver = Solver.getInstance();
+//
+//		
+//		solver.setProblem(problem);
+//		System.out.println("Forward Checking: ");
+//		solver.solveUsingForwardChecking();
+//		
+//		System.out.println("");
 		
-		Solver solver = Solver.getInstance();
-
-		
-		solver.setProblem(problem);
-		System.out.println("Forward Checking: ");
-		solver.solveUsingForwardChecking();
-		
-		System.out.println("");
-		
-		problem = reader.readProblem("csp.txt");
-		solver.setProblem(problem);
-		System.out.println("BackTracking: ");
-		solver.solveUsingBacktracking();
+//		problem = reader.readProblem("csp.txt");
+//		solver.setProblem(problem);
+//		System.out.println("BackTracking: ");
+//		solver.solveUsingBacktracking();
+//		
 		
 		
+		System.out.println("CSP Program Interface:");
+		BufferedReader br;
 		
+		br =  new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("[H] Generate Hetman Problem");
+		System.out.println("[M] Generate Magic Square Problem");
 		
+		try {
+			String line = br.readLine();
+			System.out.println("Please input the N value:");
+			String lalala = br.readLine();
+			int n = Integer.valueOf(lalala);
+			switch(line){
+			case "H":
+				generator.generateHetmanProblem(n, "csp.txt");
+				break;
+			case "M":
+				generator.generateMagicSquare(n, "csp.txt");
+				break;
+			default:
+				System.out.println("Mariusz co Ty kurwa robisz?!");
+				break;
+			}
+			
+			
+			// Tutaj juz rozwiazywanie
+			Problem problem = reader.readProblem("csp.txt");
+			stackMachine.setValueNames(problem.getValueNames());
+			Solver solver = Solver.getInstance();
+			
+			solver.setProblem(problem);
+			
+			System.out.println("[F] Forward Checking");
+			System.out.println("[B] Backtracking");
+			
+			lalala = br.readLine();
+			
+			switch(lalala){
+			case "F":
+				System.out.println("Forward Checking: ");
+				solver.solveUsingForwardChecking();
+				break;
+			case "B":
+				System.out.println("Backtracking: ");
+				solver.solveUsingBacktracking();
+				break;
+			default:
+				System.out.println("CO TY ROBISZ ?!");
+				break;
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
